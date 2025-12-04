@@ -1,0 +1,12 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+        "label": "Run AoC C++20",
+        "type": "shell",
+        "command": "g++ -std=c++20 ${file} -O2 -o aoc && ./aoc < input/${fileBasenameNoExtension:day}.txt",
+        "problemMatcher": [],
+        "group": "build"
+    }
+]
+}

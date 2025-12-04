@@ -1,0 +1,36 @@
+BasedOnStyle: LLVM
+
+# --- Formatting ---
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+ContinuationIndentWidth: 4
+
+# --- Braces ---
+BreakBeforeBraces: Attach
+
+# --- Line length ---
+ColumnLimit: 120
+
+# --- Includes ---
+SortIncludes: true
+IncludeBlocks: Merge
+
+# --- Spaces ---
+SpaceBeforeParens: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpacesInAngles: false
+
+# --- Indentation rules ---
+AccessModifierOffset: -4
+NamespaceIndentation: None
+IndentCaseLabels: true
+
+# --- C++ specifics ---
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# --- Misc ---
+PointerAlignment: Left
