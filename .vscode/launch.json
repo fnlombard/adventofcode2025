@@ -1,0 +1,17 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug AoC",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/aoc",
+      "args": ["<", "input/${fileBasenameNoExtension}.txt"],
+      "cwd": "${workspaceFolder}",
+      "stopAtEntry": false,
+      "externalConsole": false,
+      "miDebuggerPath": "gdb",
+      "preLaunchTask": "Build AoC C++20",
+    }
+  ]
+}
