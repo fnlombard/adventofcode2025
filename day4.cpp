@@ -46,35 +46,60 @@ public:
     /**
      * Return the number of valid @ cells with 3 or fewer adjacent @ cells.
      */
-    std::size_t count_valid_cells(std::size_t max_adjacent) const {
+    std::size_t count_valid_cells(std::size_t max_adjacent, bool remove_cells = false) {
         std::size_t valid_cells_n = 0;
+        auto coordinates_to_remove = std::vector<std::pair<std::size_t, std::size_t>>{};
 
-        auto in_bounds = [this](std::size_t x, std::size_t y) {
-            return x >= 0 && x < width_ && y >= 0 && y < height_;
-        };
+        auto in_bounds = [&](std::size_t x, std::size_t y) { return x >= 0 && x < width_ && y >= 0 && y < height_; };
 
         for(std::size_t y = 0; y < height_; ++y) {
             for(std::size_t x = 0; x < width_; ++x) {
-                if(!data_[y][x]) continue;
+                if(!data_[y][x])
+                    continue;
 
                 std::size_t adjacent_count = 0;
 
                 for(int dy = -1; dy <= 1; ++dy) {
                     for(int dx = -1; dx <= 1; ++dx) {
-                        if(dx == 0 && dy == 0) continue;
+                        if(dx == 0 && dy == 0)
+                            continue;
 
                         auto nx = x + dx;
                         auto ny = y + dy;
 
-                        if(in_bounds(nx, ny) && data_[ny][nx]) ++adjacent_count;
+                        if(in_bounds(nx, ny) && data_[ny][nx])
+                            ++adjacent_count;
                     }
                 }
 
-                if(adjacent_count <= max_adjacent) ++valid_cells_n;
+                if(adjacent_count <= max_adjacent) {
+                    ++valid_cells_n;
+                    if(remove_cells) {
+                        coordinates_to_remove.emplace_back(x, y);
+                    }
+                }
+            }
+        }
+
+        if(remove_cells) {
+            for(const auto& [x, y] : coordinates_to_remove) {
+                data_[y][x] = false;
             }
         }
 
         return valid_cells_n;
+    }
+
+    std::size_t count_removable_cells(std::size_t max_adjacent) {
+        size_t total_removed = 0;
+        while(true) {
+            auto removed_cells = count_valid_cells(max_adjacent, true);
+            if(removed_cells == 0)
+                break;
+
+            total_removed += removed_cells;
+        }
+        return total_removed;
     }
 
 private:
@@ -97,5 +122,5 @@ int main() {
     }
 
     std::cout << "Answer 01: " << grid.count_valid_cells(3) << '\n';
-    std::cout << "Answer 02: " << problem_two << '\n';
+    std::cout << "Answer 02: " << grid.count_removable_cells(3) << '\n';
 }
