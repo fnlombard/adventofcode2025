@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <concepts>
 #include <cstdint>
 #include <iostream>
@@ -8,7 +9,7 @@ class Ingredients {
 public:
     Ingredients() = default;
 
-        struct Range {
+    struct Range {
         uint64_t start;
         uint64_t end;
     };
@@ -39,6 +40,27 @@ public:
         return fresh_ingredient_count_;
     }
 
+    uint64_t total_ids_in_range() const {
+        std::vector<Range> ranges = fresh_ids_;
+
+        std::sort(ranges.begin(), ranges.end(), [](const Range& a, const Range& b) { return a.start < b.start; });
+
+        std::vector<Range> merged;
+        for(const auto& range : ranges) {
+            if(merged.empty() || merged.back().end < range.start - 1) {
+                merged.push_back(range);
+            } else {
+                merged.back().end = std::max(merged.back().end, range.end);
+            }
+        }
+
+        uint64_t total = 0;
+        for(const auto& range : merged) {
+            total += (range.end - range.start + 1);
+        }
+        return total;
+    }
+
 private:
     std::vector<Range> fresh_ids_ = {};
     uint64_t fresh_ingredient_count_ = 0;
@@ -63,4 +85,5 @@ int main() {
     }
 
     std::cout << "Answer 01: " << ingredients.fresh_ingredient_count() << '\n';
+    std::cout << "Answer 02: " << ingredients.total_ids_in_range() << '\n';
 }
